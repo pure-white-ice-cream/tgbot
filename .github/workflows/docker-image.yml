@@ -12,6 +12,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_TAG: $(date +%Y%m%d)-${{ github.run_number }}
+
     steps:
     - uses: actions/checkout@v4
 
@@ -24,9 +27,13 @@ jobs:
 
     # 构建镜像
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag purewhiteicecream/tgbot:${{ github.sha }}
+      run: |
+        docker build . \
+          -t purewhiteicecream/tgbot:${IMAGE_TAG} \
+          -t purewhiteicecream/tgbot:latest
 
     # 推送镜像
     - name: Push Docker image
       run: |
-        docker push purewhiteicecream/tgbot:${{ github.sha }}
+        docker push purewhiteicecream/tgbot:${IMAGE_TAG}
+        docker push purewhiteicecream/tgbot:latest

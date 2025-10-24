@@ -27,7 +27,7 @@ jobs:
 
     # 构建镜像
     - name: Build the Docker image
-      run: docker build -t purewhiteicecream/tgbot:${{ env.IMAGE_TAG }} -t purewhiteicecream/tgbot:latest
+      run: docker build -t purewhiteicecream/tgbot:${{ env.IMAGE_TAG }} -t purewhiteicecream/tgbot:latest .
 
     # 推送镜像
     - name: Push Docker image

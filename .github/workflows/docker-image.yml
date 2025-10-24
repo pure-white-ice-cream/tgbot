@@ -14,5 +14,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    # 登录 Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+    # 构建镜像
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ github.repository }}:$(date +%s)
+      run: docker build . --file Dockerfile --tag purewhiteicecream/${{ github.repository }}:$(date +%s)
+
+    # 推送镜像
+    - name: Push Docker image
+      run: |
+        docker push purewhiteicecream/${{ github.repository }}:$(date +%s)

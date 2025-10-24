@@ -12,11 +12,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      IMAGE_TAG: $(date +%Y%m%d)-${{ github.run_number }}
-
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set IMAGE_TAG
+      run: echo "IMAGE_TAG=$(date +%Y%m%d)-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
     # 登录 Docker Hub
     - name: Log in to Docker Hub
@@ -27,13 +27,10 @@ jobs:
 
     # 构建镜像
     - name: Build the Docker image
-      run: |
-        docker build . \
-          -t purewhiteicecream/tgbot:${IMAGE_TAG} \
-          -t purewhiteicecream/tgbot:latest
+      run: docker build -t purewhiteicecream/tgbot:${{ env.IMAGE_TAG }} -t purewhiteicecream/tgbot:latest
 
     # 推送镜像
     - name: Push Docker image
       run: |
-        docker push purewhiteicecream/tgbot:${IMAGE_TAG}
+        docker push purewhiteicecream/tgbot:${{ env.IMAGE_TAG }}
         docker push purewhiteicecream/tgbot:latest

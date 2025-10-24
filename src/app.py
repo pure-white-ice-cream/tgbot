@@ -1,8 +1,7 @@
-import asyncio
 import os
 import logging
 from dotenv import load_dotenv
-from telegram import BotCommand, Update
+from telegram import Update, BotCommand
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Application
 
 from command import yy, img
@@ -16,12 +15,13 @@ async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def post_init(application: Application) -> None:
-    await application.bot.set_my_commands([
-        ("start", "启动机器人"),
-        ("ping", "测试机器人是否在线"),
-        ("img", "图片转为灰色模糊"),
-        ("yy", "一言")
-    ])
+    commands = [
+        BotCommand("start", "启动机器人"),
+        BotCommand("ping", "测试机器人是否在线"),
+        BotCommand("img", "图片转为灰色模糊"),
+        BotCommand("yy", "一言")
+    ]
+    await application.bot.set_my_commands(commands)
 
 
 def main():

@@ -24,9 +24,9 @@ jobs:
 
     # 构建镜像
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag purewhiteicecream/tgbot:$(date +%s)
+      run: docker build . --file Dockerfile --tag purewhiteicecream/tgbot:${{ github.sha }}
 
     # 推送镜像
     - name: Push Docker image
       run: |
-        docker push purewhiteicecream/tgbot:$(date +%s)
+        docker push purewhiteicecream/tgbot:${{ github.sha }}

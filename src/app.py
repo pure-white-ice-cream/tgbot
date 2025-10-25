@@ -6,13 +6,14 @@ from telegram import BotCommand, BotCommandScopeDefault, BotCommandScopeAllPriva
     BotCommandScopeAllChatAdministrators, Bot
 from telegram.ext import ApplicationBuilder, CommandHandler, Application
 
-from command import xg, start
+from command import start, get, xg
 
 
 async def post_init(application: Application) -> None:
     bot: Bot = application.bot  # type: ignore
     commands = [
         BotCommand("start", "打招呼"),
+        BotCommand("get", "获取用户或群组信息"),
         BotCommand("xg", "获取随机雪糕图片"),
     ]
 
@@ -39,6 +40,7 @@ def main():
 
     # 注册 Handler
     application.add_handler(CommandHandler('start', start.command))
+    application.add_handler(CommandHandler('get', get.command))
     application.add_handler(CommandHandler('xg', xg.command))
 
     application.run_polling()

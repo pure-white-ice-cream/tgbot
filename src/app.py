@@ -1,25 +1,17 @@
 import os
 import logging
+
 from dotenv import load_dotenv
-from telegram import Update, BotCommand
+from telegram import BotCommand
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Application
 
-from command import yy, img
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
-
-
-async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="pong!")
+from command import xg, start
 
 
 async def post_init(application: Application) -> None:
     commands = [
-        BotCommand("start", "启动机器人"),
-        BotCommand("ping", "测试机器人是否在线"),
-        BotCommand("img", "图片转为灰色模糊"),
-        BotCommand("yy", "一言")
+        BotCommand("start", "打招呼"),
+        BotCommand("xg", "获取随机雪糕图片"),
     ]
     await application.bot.set_my_commands(commands)
 
@@ -36,12 +28,11 @@ def main():
     application = ApplicationBuilder().token(token).post_init(post_init).build()
 
     # 注册 Handler
-    application.add_handler(CommandHandler('start', start))
-    application.add_handler(CommandHandler('ping', ping))
-    application.add_handler(CommandHandler('img', img.command))
-    application.add_handler(CommandHandler('yy', yy.command))
+    application.add_handler(CommandHandler('start', start.command))
+    application.add_handler(CommandHandler('xg', xg.command))
 
     application.run_polling()
+
 
 if __name__ == '__main__':
     main()

@@ -3,26 +3,27 @@ import os
 
 from dotenv import load_dotenv
 from telegram import BotCommand, BotCommandScopeDefault, BotCommandScopeAllPrivateChats, BotCommandScopeAllGroupChats, \
-    BotCommandScopeAllChatAdministrators
+    BotCommandScopeAllChatAdministrators, Bot
 from telegram.ext import ApplicationBuilder, CommandHandler, Application
 
 from command import xg, start
 
 
 async def post_init(application: Application) -> None:
+    bot: Bot = application.bot  # type: ignore
     commands = [
         BotCommand("start", "打招呼"),
         BotCommand("xg", "获取随机雪糕图片"),
     ]
 
     # 删除所有旧命令作用域
-    await application.bot.delete_my_commands(scope=BotCommandScopeAllPrivateChats())
-    await application.bot.delete_my_commands(scope=BotCommandScopeAllGroupChats())
-    await application.bot.delete_my_commands(scope=BotCommandScopeAllChatAdministrators())
-    await application.bot.delete_my_commands(scope=BotCommandScopeDefault())
+    await bot.delete_my_commands(scope=BotCommandScopeAllPrivateChats())
+    await bot.delete_my_commands(scope=BotCommandScopeAllGroupChats())
+    await bot.delete_my_commands(scope=BotCommandScopeAllChatAdministrators())
+    await bot.delete_my_commands(scope=BotCommandScopeDefault())
 
     # 设置命令
-    await application.bot.set_my_commands(commands)
+    await bot.set_my_commands(commands)
 
 
 def main():

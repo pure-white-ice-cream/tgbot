@@ -8,6 +8,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     channel_id = "@xgsjw"
     max_attempts = 5  # 尝试次数，避免无限循环
+    last_exception = ''
     for _ in range(max_attempts):
         try:
             # 随机生成一个 message_id（这里最好是你自己知道的范围）

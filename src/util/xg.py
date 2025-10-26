@@ -7,7 +7,7 @@ from telegram.ext import ContextTypes
 
 channel_id = "@xgsjw"
 max_attempts = 5  # 尝试次数，避免无限循环
-BLACKLIST_IDS = {34, 113, 114, 171, 172, 173, 174, 175, 176, 177, 178, 179, 235}  # 已知的无效或视频消息ID
+BLACKLIST_IDS = {34, 113, 114, 171, 172, 173, 174, 175, 176, 177, 178, 179, 235, 375, 376}  # 已知的无效或视频消息ID
 
 
 async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):

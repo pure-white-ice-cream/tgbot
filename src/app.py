@@ -2,17 +2,33 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from telegram import BotCommand, BotCommandScopeDefault, BotCommandScopeAllPrivateChats, BotCommandScopeAllGroupChats, \
-    BotCommandScopeAllChatAdministrators, Bot
-from telegram.ext import ApplicationBuilder, CommandHandler, Application
+from telegram import (
+    Bot,
+    BotCommand,
+    BotCommandScopeDefault,
+    BotCommandScopeAllPrivateChats,
+    BotCommandScopeAllGroupChats,
+    BotCommandScopeAllChatAdministrators
+)
+from telegram.ext import (
+    Application,
+    ApplicationBuilder,
+    CommandHandler,
+    InlineQueryHandler
+)
 
-from command import start, get, xg
+from util import (
+    get,
+    start,
+    xg
+)
 
 
 async def post_init(application: Application) -> None:
     bot: Bot = application.bot  # type: ignore
     commands = [
         BotCommand("start", "打招呼"),
+        BotCommand("yy", "派蒙一言, 支持 zh | ja | en"),
         BotCommand("get", "获取用户或群组信息"),
         BotCommand("xg", "获取随机雪糕图片"),
     ]
@@ -40,8 +56,10 @@ def main():
 
     # 注册 Handler
     application.add_handler(CommandHandler('start', start.command))
+    application.add_handler(CommandHandler('yy', start.command))
     application.add_handler(CommandHandler('get', get.command))
     application.add_handler(CommandHandler('xg', xg.command))
+    application.add_handler(InlineQueryHandler(xg.inline))
 
     application.run_polling()
 

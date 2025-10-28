@@ -18,8 +18,9 @@ from telegram.ext import (
 )
 
 from util import (
+    inline,
     get,
-    start,
+    yy,
     xg
 )
 
@@ -55,11 +56,11 @@ def main():
     application = ApplicationBuilder().token(token).post_init(post_init).build()
 
     # 注册 Handler
-    application.add_handler(CommandHandler('start', start.command))
-    application.add_handler(CommandHandler('yy', start.command))
+    application.add_handler(InlineQueryHandler(inline.inline))
+    application.add_handler(CommandHandler('start', yy.command))
+    application.add_handler(CommandHandler('yy', yy.command))
     application.add_handler(CommandHandler('get', get.command))
     application.add_handler(CommandHandler('xg', xg.command))
-    application.add_handler(InlineQueryHandler(xg.inline))
 
     application.run_polling()
 

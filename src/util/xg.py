@@ -1,4 +1,5 @@
 import logging
+import os
 import random
 
 from telegram import Update
@@ -6,7 +7,10 @@ from telegram.ext import ContextTypes
 
 channel_id = "@xgsjw"
 max_attempts = 5  # 尝试次数，避免无限循环
-BLACKLIST_IDS = {34, 113, 114, 171, 172, 173, 174, 175, 176, 177, 178, 179, 185, 235, 375, 376}  # 已知的无效或视频消息ID
+BIGIN_ID = os.environ.get("BIGIN_ID", "")
+END_ID = os.environ.get("END_ID", "")
+BAN_IDS = os.environ.get("BAN_IDS", "")
+BAN_IDS = {int(x.strip()) for x in BAN_IDS.split(",")}
 
 async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -14,8 +18,8 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for _ in range(max_attempts):
         message_id = None
         try:
-            while message_id in BLACKLIST_IDS or message_id is None:
-                message_id = random.randint(8, 492)
+            while message_id in BAN_IDS or message_id is None:
+                message_id = random.randint(int(BIGIN_ID), int(END_ID))
             await context.bot.forward_message(
                 chat_id=chat_id,
                 from_chat_id=channel_id,

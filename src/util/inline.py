@@ -10,7 +10,7 @@ from . import yy
 
 channel_id = xg.channel_id
 max_attempts = xg.max_attempts
-BIGIN_ID = xg.BIGIN_ID
+BEGIN_ID = xg.BEGIN_ID
 END_ID = xg.END_ID
 BAN_IDS = xg.BAN_IDS
 
@@ -43,7 +43,7 @@ async def inline(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for i in range(3):
             message_id = None
             while message_id in BAN_IDS or message_id is None:
-                message_id = random.randint(BIGIN_ID, END_ID)
+                message_id = random.randint(BEGIN_ID, END_ID)
 
             try:
                 message = await context.bot.forward_message(

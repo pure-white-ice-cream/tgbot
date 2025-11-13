@@ -9,7 +9,7 @@ from . import yy
 
 channel_id = xg.channel_id
 max_attempts = xg.max_attempts
-BLACKLIST_IDS = xg.BLACKLIST_IDS
+BLACKLIST_IDS = xg.BAN_IDS
 
 
 async def inline(update: Update, context: ContextTypes.DEFAULT_TYPE):

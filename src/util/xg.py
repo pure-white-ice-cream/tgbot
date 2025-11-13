@@ -7,10 +7,13 @@ from telegram.ext import ContextTypes
 
 channel_id = "@xgsjw"
 max_attempts = 5  # 尝试次数，避免无限循环
-BIGIN_ID = os.environ.get("BIGIN_ID", "")
-END_ID = os.environ.get("END_ID", "")
-BAN_IDS = os.environ.get("BAN_IDS", "")
-BAN_IDS = {int(x.strip()) for x in BAN_IDS.split(",")}
+BIGIN_ID = os.environ.get("BIGIN_ID", "0")
+END_ID = os.environ.get("END_ID", "0")
+BAN_IDS = os.environ.get("BAN_IDS", "0")
+if BAN_IDS.strip():
+    BAN_IDS = {int(x.strip()) for x in BAN_IDS.split(",") if x.strip()}
+else:
+    BAN_IDS = set()
 
 async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id

@@ -1,3 +1,4 @@
+import logging
 import random
 from uuid import uuid4
 
@@ -9,7 +10,9 @@ from . import yy
 
 channel_id = xg.channel_id
 max_attempts = xg.max_attempts
-BLACKLIST_IDS = xg.BAN_IDS
+BIGIN_ID = xg.BIGIN_ID
+END_ID = xg.END_ID
+BAN_IDS = xg.BAN_IDS
 
 
 async def inline(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -37,23 +40,30 @@ async def inline(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         results = []
 
-        for i in range(5):
+        for i in range(3):
             message_id = None
-            while message_id in BLACKLIST_IDS or message_id is None:
-                message_id = random.randint(8, 492)
+            while message_id in BAN_IDS or message_id is None:
+                message_id = random.randint(BIGIN_ID, END_ID)
 
-            message = await context.bot.forward_message(
-                chat_id=-1003260240392,
-                from_chat_id=channel_id,
-                message_id=message_id,
-            )
-
-            results.append(
-                InlineQueryResultCachedPhoto(
-                    id=str(uuid4()),
-                    photo_file_id=message.photo[-1].file_id,
+            try:
+                message = await context.bot.forward_message(
+                    chat_id=-1003260240392,
+                    from_chat_id=channel_id,
+                    message_id=message_id,
                 )
-            )
+
+                results.append(
+                    InlineQueryResultCachedPhoto(
+                        id=str(uuid4()),
+                        photo_file_id=message.photo[-1].file_id,
+                    )
+                )
+            except Exception as e:
+                logging.warning(
+                    f"获取随机消息失败 | message_id: {message_id} | channel_id: {channel_id} | "
+                    f"Message: https://t.me/{channel_id}/{message_id} | Exception: {e}"
+                )
+                continue  # 继续下一个循环
 
         await update.inline_query.answer(results, cache_time=5)
         return

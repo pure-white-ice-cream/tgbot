@@ -1,4 +1,5 @@
 import logging
+import os
 import random
 from uuid import uuid4
 
@@ -10,9 +11,13 @@ from . import yy
 
 channel_id = xg.channel_id
 max_attempts = xg.max_attempts
-BEGIN_ID = xg.BEGIN_ID
-END_ID = xg.END_ID
-BAN_IDS = xg.BAN_IDS
+BEGIN_ID = int(os.environ.get("BEGIN_ID", "0"))
+END_ID = int(os.environ.get("END_ID", "0"))
+BAN_IDS = os.environ.get("BAN_IDS", "0")
+if BAN_IDS.strip():
+    BAN_IDS = {int(x.strip()) for x in BAN_IDS.split(",") if x.strip()}
+else:
+    BAN_IDS = set()
 
 
 async def inline(update: Update, context: ContextTypes.DEFAULT_TYPE):

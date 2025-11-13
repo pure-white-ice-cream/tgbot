@@ -7,8 +7,8 @@ from telegram.ext import ContextTypes
 
 channel_id = "@xgsjw"
 max_attempts = 5  # 尝试次数，避免无限循环
-BEGIN_ID = os.environ.get("BEGIN_ID", "0")
-END_ID = os.environ.get("END_ID", "0")
+BEGIN_ID = int(os.environ.get("BEGIN_ID", "0"))
+END_ID = int(os.environ.get("END_ID", "0"))
 BAN_IDS = os.environ.get("BAN_IDS", "0")
 if BAN_IDS.strip():
     BAN_IDS = {int(x.strip()) for x in BAN_IDS.split(",") if x.strip()}
@@ -22,7 +22,7 @@ async def command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message_id = None
         try:
             while message_id in BAN_IDS or message_id is None:
-                message_id = random.randint(int(BEGIN_ID), int(END_ID))
+                message_id = random.randint(BEGIN_ID, END_ID)
             await context.bot.forward_message(
                 chat_id=chat_id,
                 from_chat_id=channel_id,

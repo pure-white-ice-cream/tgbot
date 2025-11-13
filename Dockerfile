@@ -14,12 +14,6 @@ ENV PYTHONUNBUFFERED=1 \
 # 设置工作目录
 WORKDIR /app
 
-# 安装系统依赖（如需编译某些包）
-# 单独一层方便缓存复用
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
- && rm -rf /var/lib/apt/lists/*
-
 # 仅复制 requirements.txt 以最大化利用缓存
 COPY requirements.txt .
 
